@@ -1,4 +1,4 @@
-name: my workflow
+name: HTML File Deployment
 
 on:
   push:
@@ -6,16 +6,19 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Perform action on HTML file
+      - name: Start web server
         run: |
-          # Add your commands here
-              Process the cryptoanalysis.html file
-      
-  
+          python3 -m http.server 8000 &
+          sleep 5 # Wait for the server to start
+
+      - name: Access HTML file
+        run: |
+          curl -O http://localhost:8000/cryptoanalysis.html
+          cat cryptoanalysis.html
